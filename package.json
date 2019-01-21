@@ -8,7 +8,7 @@
     "api": "",
     "build": "webpack",
     "watch": "webpack --watch",
-    "dev": "elm make src/elm/Main.elm && webpack-dev-server --port 3000"
+    "dev": "elm make src/elm/Main.elm --output=dist/index.html && webpack-dev-server --port 3000"
   },
   "repository": {
     "type": "git",
