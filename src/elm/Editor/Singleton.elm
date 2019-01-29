@@ -1,4 +1,4 @@
-module Editor.Singleton exposing (Model, Msg(..), Section, applyRegex, by, getAt, init, initConcatenated, initSection, matchingSections, onChange, replace, update, view)
+module Editor.Singleton exposing (Model, Msg(..), Section, init, initConcatenated, initSection, matchingSections, update, view)
 
 import Browser
 import Html exposing (..)
@@ -7,6 +7,7 @@ import Html.Events exposing (on, onClick, onInput, targetValue)
 import Json.Decode as JD
 import Regex
 
+import Helper exposing (..)
 
 
 --main =
@@ -65,7 +66,7 @@ update msg model =
     let
         pivotMatched pattern_ index_ text_ =
             if String.length pattern_ > 0 then
-                case getAt index_ <| applyRegex pattern_ text_ of
+                case getAt index_ <| List.map .match <| applyRegex pattern_ text_ of
                     Just s ->
                         s
 
@@ -184,45 +185,6 @@ insertAt i y xs =
 
     else
         List.take i xs ++ (y :: List.drop i xs)
-
-
-
--- WARNING: It's NOT tail-recursive!
-
-
-replace : Int -> a -> List a -> List a
-replace target y xs =
-    case xs of
-        [] ->
-            []
-
-        h :: t ->
-            if target < 0 then
-                xs
-
-            else if target > List.length xs then
-                xs
-
-            else if target == 0 then
-                y :: t
-
-            else
-                h :: replace (target - 1) y t
-
-
-applyRegex : String -> String -> List String
-applyRegex pattern domain =
-    let
-        matches =
-            Regex.find (by pattern) domain
-    in
-    List.map (\m -> m.match) matches
-
-
-by : String -> Regex.Regex
-by pattern =
-    Maybe.withDefault Regex.never <| Regex.fromString pattern
-
 
 
 -- VIEW

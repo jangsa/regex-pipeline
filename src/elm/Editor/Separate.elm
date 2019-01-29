@@ -3,9 +3,8 @@ module Editor.Separate exposing (Model, Msg(..), init, update, view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (on, onClick, onInput, targetValue)
-import Json.Decode as JD
-import Regex
 import Maybe
+import Regex
 
 type alias Model =
     { text : String
@@ -24,7 +23,7 @@ init =
 
 type Msg
     = Text String
-    | Regex String
+    | Regex_ String
     | Open
 
 
@@ -43,7 +42,7 @@ update msg model =
             Text text ->
                 { model | text = text, separated = separate model.regex text }
     
-            Regex regex ->
+            Regex_ regex ->
                 { model | regex = regex, separated = separate regex model.text }
     
             Open ->
@@ -63,7 +62,7 @@ view model =
         , hr [] []
         , div []
               [ h2 [] [ text "Regex" ]
-              , input [ onInput Regex, style "width" "80%", value model.regex ] []
+              , input [ onInput Regex_, style "width" "80%", value model.regex ] []
               ]
         , hr [] []
         , div []
