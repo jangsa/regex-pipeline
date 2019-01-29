@@ -1,11 +1,11 @@
 module Editor.Map exposing (Model, Msg(..), init, update, view)
 
+import Helper exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (on, onClick, onInput, targetValue)
 import Maybe
 
-import Helper exposing (..)
 
 type alias Model =
     { regexAll : String
@@ -44,14 +44,13 @@ update msg model =
         RegexAll regexAll ->
             let
                 newSections =
-                    Debug.log "RegexAll" <|
-                        List.map
-                            (\sep ->
-                                { domain = sep
-                                , codomain = Maybe.withDefault "" <| getAt model.indexAll <| List.map .match <| applyRegex regexAll sep
-                                }
-                            )
-                            currentSep
+                    List.map
+                        (\sep ->
+                            { domain = sep
+                            , codomain = Maybe.withDefault "" <| getAt model.indexAll <| List.map .match <| applyRegex regexAll sep
+                            }
+                        )
+                        currentSep
             in
             { model
                 | regexAll = regexAll
@@ -61,14 +60,13 @@ update msg model =
         IndexAll indexAll ->
             let
                 newSections =
-                    Debug.log "IndexAll" <|
-                        List.map
-                            (\sep ->
-                                { domain = sep
-                                , codomain = Maybe.withDefault "" <| getAt indexAll <| List.map .match <| applyRegex model.regexAll sep
-                                }
-                            )
-                            currentSep
+                    List.map
+                        (\sep ->
+                            { domain = sep
+                            , codomain = Maybe.withDefault "" <| getAt indexAll <| List.map .match <| applyRegex model.regexAll sep
+                            }
+                        )
+                        currentSep
             in
             { model
                 | indexAll = indexAll
@@ -78,14 +76,13 @@ update msg model =
         Open separated ->
             let
                 newSections =
-                    Debug.log "Open" <|
-                        List.map
-                            (\sep ->
-                                { domain = sep
-                                , codomain = Maybe.withDefault "" <| getAt model.indexAll <| List.map .match <| applyRegex model.regexAll sep
-                                }
-                            )
-                            separated
+                    List.map
+                        (\sep ->
+                            { domain = sep
+                            , codomain = Maybe.withDefault "" <| getAt model.indexAll <| List.map .match <| applyRegex model.regexAll sep
+                            }
+                        )
+                        separated
             in
             { model | sections = newSections }
 
